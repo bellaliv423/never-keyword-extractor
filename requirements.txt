@@ -1,0 +1,15 @@
+streamlit==1.42.0
+openai==1.63.0
+requests==2.32.3
+python-dotenv==1.0.1
+beautifulsoup4==4.13.3
+selenium==4.28.1
+webdriver-manager==4.0.2
+notion-client==2.3.0
+pyperclip==1.9.0
+markdown==3.7
+pandas==2.2.3
+pymongo==4.11.1
+google-api-python-client==2.118.0
+google-auth-oauthlib==1.2.0
+python-markdown-math==0.8 
