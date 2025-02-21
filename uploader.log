@@ -1,0 +1,93 @@
+2025-02-17 03:47:10,658 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-17 03:47:11,040 - INFO - 검색 결과: 총 3879483개 중 20개 수신
+2025-02-17 03:47:11,044 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-17 05:09:24,925 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-17 05:09:25,082 - INFO - 검색 결과: 총 3879506개 중 20개 수신
+2025-02-17 05:09:25,085 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-17 19:56:24,106 - INFO - 네이버 API 세션 설정 완료
+2025-02-17 19:56:24,110 - INFO - 네이버 크롤러 초기화 완료
+2025-02-17 19:56:25,406 - INFO - 뉴스 검색 시작: 키워드='외국인취업', 요청 개수=10
+2025-02-17 19:56:25,518 - INFO - 검색 결과: 총 175858개 중 20개 수신
+2025-02-17 19:56:25,520 - INFO - 최종 필터링 결과: 0개의 기사 선택
+2025-02-17 19:56:34,700 - INFO - 뉴스 검색 시작: 키워드='외국인구직', 요청 개수=10
+2025-02-17 19:56:34,821 - INFO - 검색 결과: 총 27827개 중 20개 수신
+2025-02-17 19:56:34,825 - INFO - 최종 필터링 결과: 0개의 기사 선택
+2025-02-17 19:56:54,258 - INFO - 뉴스 검색 시작: 키워드='한국어', 요청 개수=10
+2025-02-17 19:56:54,442 - INFO - 검색 결과: 총 850164개 중 20개 수신
+2025-02-17 19:56:54,445 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-17 19:57:08,966 - INFO - 뉴스 검색 시작: 키워드='외국인', 요청 개수=10
+2025-02-17 19:57:09,184 - INFO - 검색 결과: 총 5418524개 중 20개 수신
+2025-02-17 19:57:09,186 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-17 19:57:32,070 - INFO - 뉴스 검색 시작: 키워드='외국인등록증', 요청 개수=10
+2025-02-17 19:57:32,384 - INFO - 검색 결과: 총 20956개 중 20개 수신
+2025-02-17 19:57:32,389 - INFO - 최종 필터링 결과: 4개의 기사 선택
+2025-02-19 02:13:17,310 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:13:17,474 - INFO - 검색 결과: 총 3889208개 중 20개 수신
+2025-02-19 02:13:17,476 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:13:33,149 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-02-19 02:13:33,154 - ERROR - 재구성 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:13:33,156 - ERROR - 콘텐츠 처리 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:13:42,611 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-02-19 02:13:42,612 - ERROR - 재구성 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:13:42,612 - ERROR - 콘텐츠 처리 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:17:22,095 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:17:22,337 - INFO - 검색 결과: 총 3889209개 중 20개 수신
+2025-02-19 02:17:22,341 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:17:39,793 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-02-19 02:17:39,797 - ERROR - 재구성 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:17:39,798 - ERROR - 콘텐츠 처리 중 오류 발생: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************JaAA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-02-19 02:21:22,150 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:21:22,379 - INFO - 검색 결과: 총 3889209개 중 20개 수신
+2025-02-19 02:21:22,381 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:22:06,324 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:22:11,251 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:23:25,430 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:23:29,075 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:27:58,961 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:27:59,190 - INFO - 검색 결과: 총 3889210개 중 20개 수신
+2025-02-19 02:27:59,193 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:28:24,858 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:28:31,373 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:28:36,466 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:29:27,324 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:29:30,675 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:29:30,685 - ERROR - 콘텐츠 처리 중 오류 발생: 'content'
+2025-02-19 02:40:20,831 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:40:25,326 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:40:25,337 - ERROR - 콘텐츠 처리 중 오류 발생: 'content'
+2025-02-19 02:48:03,069 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:48:03,367 - INFO - 검색 결과: 총 3889213개 중 20개 수신
+2025-02-19 02:48:03,370 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:48:44,827 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:48:51,311 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:48:51,318 - ERROR - 콘텐츠 처리 중 오류 발생: 'content'
+2025-02-19 02:49:40,383 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:49:43,522 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:50:27,281 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:50:34,030 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:50:34,036 - ERROR - 콘텐츠 처리 중 오류 발생: 'content'
+2025-02-19 02:55:34,024 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 02:55:34,298 - INFO - 검색 결과: 총 3889214개 중 20개 수신
+2025-02-19 02:55:34,300 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 02:56:22,313 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:56:27,594 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:56:58,364 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 02:57:01,570 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 03:36:19,568 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 03:36:19,870 - INFO - 검색 결과: 총 3889217개 중 20개 수신
+2025-02-19 03:36:19,872 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 03:37:07,755 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 03:37:12,858 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 03:37:59,534 - ERROR - 옵시디언 저장 중 오류: 'content'
+2025-02-19 03:38:11,005 - ERROR - 노션 저장 중 오류: 'content'
+2025-02-19 04:50:03,176 - INFO - 뉴스 검색 시작: 키워드='ai', 요청 개수=10
+2025-02-19 04:50:03,352 - INFO - 검색 결과: 총 3889222개 중 20개 수신
+2025-02-19 04:50:03,353 - INFO - 최종 필터링 결과: 10개의 기사 선택
+2025-02-19 04:50:39,759 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:50:42,693 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:51:19,406 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:51:23,128 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:51:32,021 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:52:15,188 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:52:20,457 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-19 04:52:39,585 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"

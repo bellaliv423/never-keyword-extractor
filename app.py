@@ -87,9 +87,29 @@ with st.sidebar:
     with st.expander("🤖 AI 처리 설정", expanded=True):
         ai_mode = st.selectbox(
             "처리 모드",
-            options=["요약", "재구성"],
+            options=["재구성 (1000자)", "요약 (500자)"],
             help="AI가 콘텐츠를 처리하는 방식을 선택합니다."
         )
+        
+        translation_enabled = st.checkbox(
+            "번역 활성화",
+            value=False,
+            help="처리된 콘텐츠를 다른 언어로 번역합니다."
+        )
+        
+        if translation_enabled:
+            target_language = st.selectbox(
+                "번역 언어",
+                options=[
+                    "영어 (en)", 
+                    "일본어 (ja)", 
+                    "중국어(간체) (zh-CN)",
+                    "중국어(번체) (zh-TW)", 
+                    "한국어 (ko)"
+                ],
+                format_func=lambda x: x.split(" (")[0],
+                help="번역할 목표 언어를 선택합니다."
+            )
     
     with st.expander("💾 저장 설정", expanded=True):
         save_platforms = st.multiselect(
@@ -197,44 +217,56 @@ with col2:
             st.markdown(keywords_html, unsafe_allow_html=True)
 
 # AI 처리 섹션
-st.markdown("---")
-st.subheader("🤖 AI 처리")
-
-# 콘텐츠 선택
 if 'news_results' in st.session_state or 'blog_results' in st.session_state:
+    st.markdown("---")
+    st.subheader("🤖 AI 처리 및 번역")
+    
+    # 콘텐츠 선택 UI
     all_contents = []
     if 'news_results' in st.session_state:
         all_contents.extend([{'type': 'news', **item} for item in st.session_state.news_results])
     if 'blog_results' in st.session_state:
         all_contents.extend([{'type': 'blog', **item} for item in st.session_state.blog_results])
     
-    # 콘텐츠 선택 UI
-    selected_title = st.selectbox(
-        "처리할 콘텐츠 선택",
-        options=[item['title'] for item in all_contents],
-        format_func=lambda x: f"[{next(item['type'] for item in all_contents if item['title'] == x)}] {x}"
-    )
-    
-    selected_content = next(item for item in all_contents if item['title'] == selected_title)
-    
-    # 처리 버튼
     col1, col2 = st.columns(2)
+    
     with col1:
-        if st.button("🔄 AI 처리 시작", use_container_width=True):
-            with st.spinner("AI가 콘텐츠를 처리하고 있습니다..."):
+        selected_title = st.selectbox(
+            "처리할 콘텐츠 선택",
+            options=[item['title'] for item in all_contents],
+            format_func=lambda x: f"[{next(item['type'] for item in all_contents if item['title'] == x)}] {x}"
+        )
+        
+        selected_content = next(item for item in all_contents if item['title'] == selected_title)
+    
+    with col2:
+        if st.button("🔄 처리 시작", use_container_width=True):
+            with st.spinner("콘텐츠를 처리하고 있습니다..."):
                 try:
                     processor = ContentProcessor()
-                    # 비동기 함수 실행을 위한 이벤트 루프 설정
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
-                    # 컨텍스트 추가
                     add_script_run_ctx()
-                    # 비동기 처리 실행
+                    
+                    # AI 처리
                     result = loop.run_until_complete(
-                        processor.process_content(selected_content, mode=ai_mode)
+                        processor.process_content(selected_content, 
+                                               mode="재구성" if "재구성" in ai_mode else "요약")
                     )
+                    
+                    # 번역 처리
+                    if translation_enabled:
+                        lang_code = target_language.split(" (")[1].rstrip(")")
+                        content_to_translate = result['long_version'] if "재구성" in ai_mode else result['short_version']
+                        translation_result = loop.run_until_complete(
+                            processor.translate_content(content_to_translate, lang_code)
+                        )
+                        result['translated_text'] = translation_result['translated_text']
+                        result['target_language'] = lang_code
+                    
                     st.session_state.ai_result = result
                     st.success("처리가 완료되었습니다!")
+                    
                 except Exception as e:
                     st.error(f"처리 중 오류가 발생했습니다: {str(e)}")
                 finally:
@@ -245,25 +277,24 @@ if 'ai_result' in st.session_state:
     st.markdown("---")
     st.subheader("📝 처리 결과")
     
-    if st.session_state.ai_result['type'] == 'summary':
-        with st.expander("1000자 버전", expanded=True):
-            st.markdown(st.session_state.ai_result['long_version'])
-            if st.button("📋 복사 (1000자)", key="copy_long"):
-                st.session_state.uploader.copy_to_clipboard(st.session_state.ai_result['long_version'])
-                st.success("복사되었습니다!")
-        
-        with st.expander("450자 버전"):
-            st.markdown(st.session_state.ai_result['short_version'])
-            if st.button("📋 복사 (450자)", key="copy_short"):
-                st.session_state.uploader.copy_to_clipboard(st.session_state.ai_result['short_version'])
-                st.success("복사되었습니다!")
+    tabs = ["원문"]
+    if translation_enabled:
+        tabs.append("번역본")
     
-    else:  # restructured
-        with st.expander("재구성 결과", expanded=True):
-            st.markdown(st.session_state.ai_result['content'])
-            if st.button("📋 복사", key="copy_restructured"):
-                st.session_state.uploader.copy_to_clipboard(st.session_state.ai_result['content'])
-                st.success("복사되었습니다!")
+    result_tabs = st.tabs(tabs)
+    
+    with result_tabs[0]:
+        if st.session_state.ai_result['type'] == 'summary':
+            st.markdown("### 요약 (500자)")
+            st.markdown(st.session_state.ai_result['short_version'])
+        else:
+            st.markdown("### 재구성 (1000자)")
+            st.markdown(st.session_state.ai_result['long_version'])
+    
+    if translation_enabled and len(result_tabs) > 1:
+        with result_tabs[1]:
+            st.markdown(f"### 번역본 ({target_language.split(' (')[0]})")
+            st.markdown(st.session_state.ai_result.get('translated_text', ''))
     
     # 키워드 표시
     if 'keywords' in st.session_state.ai_result:
@@ -283,11 +314,18 @@ if 'ai_result' in st.session_state:
     with col1:
         if st.button("📋 클립보드에 복사", use_container_width=True):
             try:
-                content = st.session_state.ai_result['content'] if st.session_state.ai_result['type'] == 'restructured' else st.session_state.ai_result['long_version']
-                st.session_state.uploader.copy_to_clipboard(content)
-                st.success("클립보드에 복사되었습니다!")
+                # 결과 타입에 따라 적절한 내용 선택
+                if st.session_state.ai_result['type'] == 'summary':
+                    content = st.session_state.ai_result['short_version']
+                else:  # restructured
+                    content = st.session_state.ai_result['long_version']
+                
+                # 복사할 내용을 표시
+                formatted_content = st.session_state.uploader.copy_to_clipboard(content)
+                st.code(formatted_content, language="markdown")
+                st.info("위 텍스트를 선택하여 복사해주세요! (Ctrl+A, Ctrl+C)")
             except Exception as e:
-                st.error(f"복사 중 오류가 발생했습니다: {str(e)}")
+                st.error(f"복사 준비 중 오류가 발생했습니다: {str(e)}")
     
     with col2:
         save_platform = st.selectbox(

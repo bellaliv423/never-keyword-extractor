@@ -47,22 +47,26 @@ class ContentProcessor:
             if not content or 'description' not in content:
                 raise ValueError("유효하지 않은 콘텐츠 형식입니다.")
 
-            if mode == 'summarize':
-                # 1000자 버전
-                long_version = await self.summarize_content(content['description'], 1000)
-                # 450자 버전
-                short_version = await self.summarize_content(content['description'], 450)
+            if mode == '요약':
+                # 500자 버전
+                summary = await self.summarize_content(content['description'], 500)
                 
                 return {
                     "type": "summary",
                     "title": content.get('title', ''),
                     "original_link": content.get('link', ''),
-                    "long_version": long_version['content'],
-                    "short_version": short_version['content'],
+                    "short_version": summary['content'],
                     "keywords": await self.extract_keywords(content['description'])
                 }
             else:  # 재구성 모드
-                return await self.restructure_content(content)
+                restructured = await self.restructure_content(content)
+                return {
+                    "type": "restructured",
+                    "title": content.get('title', ''),
+                    "original_link": content.get('link', ''),
+                    "long_version": restructured['content'],
+                    "keywords": await self.extract_keywords(restructured['content'])
+                }
                 
         except Exception as e:
             self.logger.error(f"콘텐츠 처리 중 오류 발생: {str(e)}")
@@ -105,7 +109,7 @@ class ContentProcessor:
         """콘텐츠 재구성"""
         try:
             system_prompt = f"""
-            다음 내용을 새롭게 재구성해주세요.
+            다음 내용을 1000자 내외로 재구성해주세요.
             재구성시 다음 규칙을 따라주세요:
             1. 논리적 구조화
             2. 객관적 사실 중심
@@ -126,11 +130,8 @@ class ContentProcessor:
 
             restructured = response.choices[0].message.content
             return {
-                "type": "restructured",
-                "title": content['title'],
-                "original_link": content['link'],
                 "content": restructured,
-                "keywords": await self.extract_keywords(restructured)
+                "type": "restructured"
             }
             
         except Exception as e:
@@ -155,4 +156,57 @@ class ContentProcessor:
             
         except Exception as e:
             self.logger.error(f"키워드 추출 중 오류 발생: {str(e)}")
-            return [] 
+            return []
+
+    async def translate_content(self, content: str, target_lang: str = 'en') -> Dict:
+        """콘텐츠 번역"""
+        try:
+            lang_codes = {
+                'en': '영어',
+                'ja': '일본어',
+                'zh-CN': '중국어(간체)',
+                'zh-TW': '중국어(번체)',
+                'ko': '한국어'
+            }
+            
+            # 중국어 번역을 위한 특별 프롬프트 추가
+            if target_lang.startswith('zh'):
+                system_prompt = f"""
+                다음 내용을 {lang_codes.get(target_lang, target_lang)}로 번역해주세요.
+                번역시 다음 규칙을 따라주세요:
+                1. 자연스러운 표현 사용
+                2. 전문 용어는 정확하게 번역
+                3. 문맥을 고려한 번역
+                4. 원문의 뉘앙스 유지
+                5. {'번체자를 사용해주세요.' if target_lang == 'zh-TW' else '간체자를 사용해주세요.'}
+                """
+            else:
+                system_prompt = f"""
+                다음 내용을 {lang_codes.get(target_lang, target_lang)}로 번역해주세요.
+                번역시 다음 규칙을 따라주세요:
+                1. 자연스러운 표현 사용
+                2. 전문 용어는 정확하게 번역
+                3. 문맥을 고려한 번역
+                4. 원문의 뉘앙스 유지
+                """
+
+            response = await self.client.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": content}
+                ],
+                temperature=0.3,
+                max_tokens=2000
+            )
+
+            translated = response.choices[0].message.content
+            return {
+                "translated_text": translated,
+                "source_text": content,
+                "target_language": target_lang
+            }
+            
+        except Exception as e:
+            self.logger.error(f"번역 중 오류 발생: {str(e)}")
+            raise ContentProcessorException(f"번역 실패: {str(e)}") 

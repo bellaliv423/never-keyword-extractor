@@ -12,6 +12,7 @@ from pathlib import Path
 import markdown
 import re
 from notion_client import Client
+import streamlit as st
 
 class ContentUploaderException(Exception):
     """업로더 관련 커스텀 예외"""
@@ -164,11 +165,13 @@ class ContentUploader:
     def copy_to_clipboard(self, content: str) -> bool:
         """클립보드에 복사"""
         try:
-            pyperclip.copy(content)
-            return True
+            formatted_content = f"""```
+{content}
+```"""
+            return formatted_content
         except Exception as e:
-            self.logger.error(f"클립보드 복사 중 오류: {str(e)}")
-            raise ContentUploaderException("클립보드 복사 실패")
+            self.logger.error(f"콘텐츠 포맷팅 중 오류: {str(e)}")
+            raise ContentUploaderException("콘텐츠 포맷팅 실패")
 
     def convert_to_markdown(self, content: Dict) -> str:
         """콘텐츠를 마크다운 형식으로 변환"""
@@ -184,6 +187,9 @@ class ContentUploader:
 ## 요약본 (450자)
 {content.get('short_version', '')}
 
+## 번역본
+{content.get('translated_text', '')}
+
 ## 키워드
 {' '.join(content.get('keywords', []))}
 
@@ -198,20 +204,45 @@ class ContentUploader:
     def save_to_obsidian(self, content: Dict) -> Dict:
         """옵시디언에 저장"""
         try:
-            if not os.path.exists(self.obsidian_vault):
-                os.makedirs(self.obsidian_vault)
+            # 옵시디언 볼트 경로 확인
+            vault_path = os.getenv('OBSIDIAN_VAULT_PATH')
+            if not vault_path:
+                vault_path = os.path.join(os.path.expanduser('~'), 'Documents/Obsidian/Vault')
             
-            # 파일명 생성
+            if not os.path.exists(vault_path):
+                os.makedirs(vault_path)
+            
+            # 파일명 생성 (현재 시간 + 제목)
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"{timestamp}_{self.sanitize_filename(content['title'])}.md"
-            filepath = os.path.join(self.obsidian_vault, filename)
+            safe_title = "".join(c for c in content['title'] if c.isalnum() or c in (' ', '-', '_')).strip()
+            filename = f"{timestamp}_{safe_title[:30]}.md"
+            filepath = os.path.join(vault_path, filename)
             
-            # 마크다운 형식으로 변환
-            markdown_content = self.format_to_markdown(content)
+            # 마크다운 내용 생성
+            md_content = f"""---
+title: {content['title']}
+date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+type: {content['type']}
+---
+
+# {content['title']}
+
+## 원본 링크
+{content.get('original_link', '')}
+
+## {'요약 (500자)' if content['type'] == 'summary' else '재구성 (1000자)'}
+{content.get('short_version' if content['type'] == 'summary' else 'long_version', '')}
+
+## 키워드
+{' '.join(content.get('keywords', []))}
+
+---
+생성일시: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+"""
             
             # 파일 저장
             with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(markdown_content)
+                f.write(md_content)
             
             return {
                 "status": "success",
